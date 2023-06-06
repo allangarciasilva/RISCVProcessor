@@ -1,0 +1,16 @@
+[libraries]
+riscv.files = [
+    "RISCVProcessor/common.vhd",
+    "RISCVProcessor/ALUSelector.vhd",
+    "RISCVProcessor/ALU.vhd",
+    "RISCVProcessor/BranchDetector.vhd",
+    "RISCVProcessor/InstructionFormatSelector.vhd",
+    "RISCVProcessor/InstructionStateSelector.vhd",
+    "RISCVProcessor/InstructionStateMaxCounterSelector.vhd",
+    "RISCVProcessor/ImmediateGenerator.vhd",
+    "RISCVProcessor/ControlUnit.vhd",
+    "RISCVProcessor/MemoryMasker.vhd",
+    "RISCVProcessor/RISCVProcessor.vhd",
+    "memory_files/memory_init.vhd",
+    "testbenches/RISCVProcessor_tb.vhd",
+]
