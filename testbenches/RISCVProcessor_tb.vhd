@@ -8,6 +8,21 @@ entity RISCVProcessor_tb is
 end entity RISCVProcessor_tb;
 
 architecture rtl of RISCVProcessor_tb is
+    component RAM
+        port (
+            address_a : in std_logic_vector (15 downto 0);
+            address_b : in std_logic_vector (15 downto 0);
+            byteena_a : in std_logic_vector (3 downto 0) := (others => '1');
+            clock     : in std_logic                     := '1';
+            data_a    : in std_logic_vector (31 downto 0);
+            data_b    : in std_logic_vector (31 downto 0);
+            wren_a    : in std_logic := '0';
+            wren_b    : in std_logic := '0';
+            q_a       : out std_logic_vector (31 downto 0);
+            q_b       : out std_logic_vector (31 downto 0)
+        );
+    end component;
+
     signal clk          : std_logic;
     signal mem_in       : word_t := (others => '0');
     signal mem_out      : word_t;
@@ -16,7 +31,10 @@ architecture rtl of RISCVProcessor_tb is
     signal mem_byte_en  : std_logic_vector(3 downto 0);
     signal halt         : std_logic;
 
-    signal memory : memory_t := initialize_memory;
+    signal wren_b    : std_logic                      := '0';
+    signal address_b : std_logic_vector (15 downto 0) := (others => '0');
+    signal data_b    : std_logic_vector (31 downto 0) := (others => '0');
+    signal q_b       : std_logic_vector (31 downto 0) := (others => '0');
 
 begin
     processor : entity work.RISCVProcessor port map (
@@ -31,7 +49,6 @@ begin
     sim : process
         variable n_clks : integer := 20000;
     begin
-        -- memory <= initialize_memory;
         clk <= '0';
         wait for 10 ns;
 
@@ -52,32 +69,17 @@ begin
 
     end process; -- sim
 
-    mem : process (clk)
-
-        variable new_content              : word_t;
-        variable upper_bound, lower_bound : integer range XLEN - 1 downto 0;
-
-    begin
-
-        if rising_edge(clk) then
-            mem_in <= memory(to_integer(unsigned(mem_addr))/4);
-
-            new_content := memory(to_integer(unsigned(mem_addr))/4);
-            byte_en_loop : for i in 0 to 3 loop
-                lower_bound := 8 * i;
-                upper_bound := 8 * (i + 1) - 1;
-
-                if mem_byte_en(i) = '1' then
-                    new_content(upper_bound downto lower_bound) := mem_out(upper_bound downto lower_bound);
-                end if;
-            end loop;
-
-            if mem_write_en = '1' then
-                memory(to_integer(unsigned(mem_addr))/4) <= new_content;
-                mem_in                                   <= new_content;
-            end if;
-        end if;
-
-    end process; -- mem
+    mem : RAM port map(
+        address_a => mem_addr(17 downto 2),
+        address_b => address_b,
+        byteena_a => mem_byte_en,
+        clock     => clk,
+        data_a    => mem_out,
+        data_b    => data_b,
+        wren_a    => mem_write_en,
+        wren_b    => wren_b,
+        q_a       => mem_in,
+        q_b       => q_b
+    );
 
 end architecture rtl;

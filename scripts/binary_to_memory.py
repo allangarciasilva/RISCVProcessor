@@ -64,7 +64,7 @@ end package body;
 def render_hex_values_as_mif(hex_values: list[str], total_words: int):
     lines = [f"{index} : {value}" for index, value in enumerate(hex_values)]
     if len(hex_values) < total_words:
-        last_line = f"[{len(hex_values)}..{total_words - 1}] := 00000000"
+        last_line = f"[{len(hex_values)}..{total_words - 1}] : 00000000"
         lines.append(last_line)
 
     rendered_lines = "\n".join("\t" + line + ";" for line in lines)
