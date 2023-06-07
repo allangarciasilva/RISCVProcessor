@@ -15,7 +15,8 @@ files = [
     "RISCVProcessor/InstructionStateSelector.vhd",
     "RISCVProcessor/MemoryMasker.vhd",
     "RISCVProcessor/RISCVProcessor.vhd",
-    "quartus_blocks/RAM.vhd",
+    "quartus_blocks/DualPortRAM.vhd",
+    "quartus_blocks/SinglePortROM.vhd",
     "testbenches/RISCVProcessor_tb.vhd",
 ]
 

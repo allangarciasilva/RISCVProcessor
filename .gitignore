@@ -41,5 +41,7 @@ vsim
 */*_sim/
 incremental_db/
 db/
-_output_files/
+*output_files/
 PLLJ_PLLSPE_INFO.txt
+*_pin_model_dump.txt
+greybox_tmp

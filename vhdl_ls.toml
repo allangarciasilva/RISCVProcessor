@@ -13,4 +13,9 @@ riscv.files = [
     "RISCVProcessor/RISCVProcessor.vhd",
     "memory_files/memory_init.vhd",
     "testbenches/RISCVProcessor_tb.vhd",
+    "/home/allan/Programs/intelFPGA/19.1/modelsim_ase/altera/vhdl/src/altera_mf/altera_mf.vhd",
+    "/home/allan/Programs/intelFPGA/19.1/modelsim_ase/altera/vhdl/src/altera_mf/altera_mf_components.vhd",
+    "quartus_blocks/DualPortRAM.vhd",
+    "quartus_blocks/SinglePortROM.vhd",
+    "Main.vhd"
 ]

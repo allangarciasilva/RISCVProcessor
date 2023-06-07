@@ -1,19 +1,25 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;
 use work.RISCV.all;
 
-entity RISCVProcessor_tb is
-end entity RISCVProcessor_tb;
+entity Main is
+    port (
+        clk          : in std_logic;
+        out_mem_out  : out word_t;
+        out_mem_addr : out word_t;
+        out_rom      : out std_logic_vector(63 downto 0)
+    );
+end entity Main;
 
-architecture rtl of RISCVProcessor_tb is
-    constant clk_period        : time    := 20 ns;
+architecture rtl of Main is
+
     constant mem_address_width : integer := 16;
 
-    signal clk          : std_logic;
-    signal mem_in       : word_t := (others => '0');
+    signal real_clk : std_logic;
+
     signal mem_out      : word_t;
     signal mem_addr     : word_t;
+    signal mem_in       : word_t := (others => '0');
     signal mem_write_en : std_logic;
     signal mem_byte_en  : std_logic_vector(3 downto 0);
     signal halt         : std_logic;
@@ -25,8 +31,12 @@ architecture rtl of RISCVProcessor_tb is
 
 begin
 
+    real_clk     <= clk and (not halt);
+    out_mem_out  <= mem_out;
+    out_mem_addr <= mem_addr;
+
     processor : entity work.RISCVProcessor port map (
-        clk          => clk,
+        clk          => real_clk,
         mem_in       => mem_in,
         mem_out      => mem_out,
         mem_addr     => mem_addr,
@@ -34,25 +44,11 @@ begin
         mem_byte_en  => mem_byte_en,
         halt         => halt);
 
-    sim : process
-        variable half_period : time := clk_period/2;
-    begin
-        while halt /= '1' loop
-
-            clk <= '0';
-            wait for half_period;
-
-            clk <= '1';
-            wait for half_period;
-
-        end loop;
-    end process; -- sim
-
     mem : entity work.DualPortRAM
         generic map(
             data_width          => word_t'length,
             address_width       => mem_address_width,
-            initialization_file => "../memory_files/memory_init.mif")
+            initialization_file => "memory_files/memory_init.mif")
         port map(
             clk       => clk,
             address_a => mem_addr(mem_address_width + 1 downto 2),
@@ -64,5 +60,16 @@ begin
             byteena_a => mem_byte_en,
             q_a       => mem_in,
             q_b       => q_b);
+
+    rom : entity work.SinglePortROM
+        generic map(
+            data_width          => 64,
+            address_width       => 8,
+            initialization_file => "memory_files/rom.mif")
+        port map(
+            address => mem_addr(7 downto 0),
+            clk     => clk,
+            q       => out_rom
+        );
 
 end architecture rtl;
