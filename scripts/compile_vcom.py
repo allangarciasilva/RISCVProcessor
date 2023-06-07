@@ -15,9 +15,11 @@ files = [
     "RISCVProcessor/InstructionStateSelector.vhd",
     "RISCVProcessor/MemoryMasker.vhd",
     "RISCVProcessor/RISCVProcessor.vhd",
+    "VGACard/VGACard.vhd",
     "quartus_blocks/DualPortRAM.vhd",
     "quartus_blocks/SinglePortROM.vhd",
     "testbenches/RISCVProcessor_tb.vhd",
+    "testbenches/VGACard_tb.vhd",
 ]
 
 os.makedirs(VSIM_DIR, exist_ok=True)
