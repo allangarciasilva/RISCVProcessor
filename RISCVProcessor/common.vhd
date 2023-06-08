@@ -52,9 +52,11 @@ package RISCV is
     constant IOP_ECALL     : opcode_t := "1110011";
 
     -- Constants related to ecalls
-    constant ECALL_REG    : register_identifier_t := 17;
-    constant EC_HALT      : word_t                := std_logic_vector(to_unsigned(10, word_t'length));
-    constant EC_READ_CHAR : word_t                := std_logic_vector(to_unsigned(2, word_t'length));
+    constant ECALL_REG     : register_identifier_t := 17;
+    constant EC_OUTPUT_REG : word_t                := std_logic_vector(to_unsigned(1, word_t'length));
+    constant EC_READ_CHAR  : word_t                := std_logic_vector(to_unsigned(2, word_t'length));
+    constant EC_SLEEP_US   : word_t                := std_logic_vector(to_unsigned(3, word_t'length));
+    constant EC_HALT       : word_t                := std_logic_vector(to_unsigned(10, word_t'length));
 
 end package RISCV;
 

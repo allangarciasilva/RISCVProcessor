@@ -22,60 +22,40 @@ architecture rtl of ImmediateGenerator is
 begin
     inst_fmt_sel : entity work.InstructionFormatSelector port map (inst, fmt);
 
-    -- Generating I-Immediate
-    i1 : for i in 0 to 10 generate
-        i_imm(i) <= inst(i + 20);
-    end generate i1;
-    i2 : for i in 11 to 31 generate
-        i_imm(i) <= inst(31);
-    end generate i2;
+    -- I-immediate
+    i_imm(31 downto 11) <= (others => inst(31));
+    i_imm(10 downto 5)  <= inst(30 downto 25);
+    i_imm(4 downto 1)   <= inst(24 downto 21);
+    i_imm(0)            <= inst(20);
 
-    -- Generating S-Immediate
-    s1 : for i in 0 to 4 generate
-        s_imm(i) <= inst(i + 7);
-    end generate s1;
-    s2 : for i in 5 to 10 generate
-        s_imm(i) <= inst(i + 20);
-    end generate s2;
-    s3 : for i in 11 to 31 generate
-        s_imm(i) <= inst(31);
-    end generate s3;
+    -- S-immediate
+    s_imm(31 downto 11) <= (others => inst(31));
+    s_imm(10 downto 5)  <= inst(30 downto 25);
+    s_imm(4 downto 1)   <= inst(11 downto 8);
+    s_imm(0)            <= inst(7);
 
-    -- Generating B-Immediate
-    b_imm(0) <= '0';
-    b1 : for i in 1 to 4 generate
-        b_imm(i) <= inst(i + 7);
-    end generate b1;
-    b2 : for i in 5 to 10 generate
-        b_imm(i) <= inst(i + 20);
-    end generate b2;
-    b_imm(11) <= inst(7);
-    b3 : for i in 12 to 31 generate
-        b_imm(i) <= inst(31);
-    end generate b3;
+    -- B-immediate
+    b_imm(31 downto 12) <= (others => inst(31));
+    b_imm(11)           <= inst(7);
+    b_imm(10 downto 5)  <= inst(30 downto 25);
+    b_imm(4 downto 1)   <= inst(11 downto 8);
+    b_imm(0)            <= '0';
 
-    -- Generating U-Immediate
-    u1 : for i in 0 to 11 generate
-        u_imm(i) <= '0';
-    end generate u1;
-    u2 : for i in 12 to 31 generate
-        u_imm(i) <= inst(i);
-    end generate u2;
+    -- U-immediate
+    u_imm(31)           <= inst(31);
+    u_imm(30 downto 20) <= inst(30 downto 20);
+    u_imm(19 downto 12) <= inst(19 downto 12);
+    u_imm(11 downto 0)  <= (others => '0');
 
-    -- Generating J-Immediate
-    j_imm(0) <= '0';
-    j1 : for i in 1 to 10 generate
-        j_imm(i) <= inst(i + 20);
-    end generate j1;
-    j_imm(11) <= inst(20);
-    j2 : for i in 12 to 19 generate
-        j_imm(i) <= inst(i);
-    end generate j2;
-    j3 : for i in 20 to 31 generate
-        j_imm(i) <= inst(31);
-    end generate j3;
+    -- J-immediate
+    j_imm(31 downto 20) <= (others => inst(31));
+    j_imm(19 downto 12) <= inst(19 downto 12);
+    j_imm(11)           <= inst(20);
+    j_imm(10 downto 5)  <= inst(30 downto 25);
+    j_imm(4 downto 1)   <= inst(24 downto 21);
+    j_imm(0)            <= '0';
 
-    -- R Instructions do not contain immediates
+    -- R-immediate (does not exist)
     r_imm <= ZEROES;
 
     -- Selecting the desired immediate from the given format

@@ -24,35 +24,29 @@ architecture rtl of VGACard_tb is
     signal ram_addr : word_t;
     signal ram_in   : word_t;
 
-    signal h_sync     : std_logic;
-    signal v_sync     : std_logic;
-    signal r          : std_logic_vector(3 downto 0);
-    signal g          : std_logic_vector(3 downto 0);
-    signal b          : std_logic_vector(3 downto 0);
-    signal frame_done : std_logic;
+    signal h_sync : std_logic;
+    signal v_sync : std_logic;
+    signal r      : std_logic_vector(3 downto 0);
+    signal g      : std_logic_vector(3 downto 0);
+    signal b      : std_logic_vector(3 downto 0);
 
 begin
 
     char_clk <= not ram_clk;
 
     simul : process
-        variable cnt_frames : integer := 0;
     begin
 
         ram_clk <= '0';
-        wait for 20 ns;
+        wait for 10 ns;
 
-        while cnt_frames < 2 loop
+        while now < 18.5 ms loop
 
             ram_clk <= '1';
-            wait for 20 ns;
+            wait for 10 ns;
 
             ram_clk <= '0';
-            wait for 20 ns;
-
-            if frame_done = '1' then
-                cnt_frames := cnt_frames + 1;
-            end if;
+            wait for 10 ns;
 
         end loop;
         wait;
@@ -123,17 +117,16 @@ begin
             amplification => 2
         )
         port map(
-            ram_clk    => ram_clk,
+            clk_50mhz  => ram_clk,
             ram_in     => ram_in,
             char_in    => char_in,
             char_clk   => char_clk,
             ram_addr   => ram_addr,
             char_addr  => char_addr,
-            h_sync     => h_sync,
-            v_sync     => v_sync,
-            r          => r,
-            g          => g,
-            b          => b,
-            frame_done => frame_done);
+            vga_h_sync => h_sync,
+            vga_v_sync => v_sync,
+            vga_r      => r,
+            vga_g      => g,
+            vga_b      => b);
 
 end architecture rtl;

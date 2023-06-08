@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-VSIM_DIR = "vsim"
+SIMULATION_DIR = "simulation"
 
 files = [
     "RISCVProcessor/common.vhd",
@@ -18,13 +18,15 @@ files = [
     "VGACard/VGACard.vhd",
     "quartus_blocks/DualPortRAM.vhd",
     "quartus_blocks/SinglePortROM.vhd",
+    "Main.vhd",
     "testbenches/RISCVProcessor_tb.vhd",
     "testbenches/VGACard_tb.vhd",
+    "testbenches/Main_tb.vhd",
 ]
 
-os.makedirs(VSIM_DIR, exist_ok=True)
-if not os.path.isdir(os.path.join(VSIM_DIR, "work")):
-    subprocess.run(["vlib", "work"], cwd=VSIM_DIR)
+os.makedirs(SIMULATION_DIR, exist_ok=True)
+if not os.path.isdir(os.path.join(SIMULATION_DIR, "work")):
+    subprocess.run(["vlib", "work"], cwd=SIMULATION_DIR)
 
 abs_paths = list(map(os.path.abspath, files))
-subprocess.run(["vcom"] + abs_paths, cwd=VSIM_DIR)
+subprocess.run(["vcom"] + abs_paths, cwd=SIMULATION_DIR)

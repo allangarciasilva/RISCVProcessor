@@ -12,10 +12,10 @@ riscv.files = [
     "RISCVProcessor/MemoryMasker.vhd",
     "RISCVProcessor/RISCVProcessor.vhd",
     "VGACard/VGACard.vhd",
-    "memory_files/memory_init.vhd",
-    "testbenches/RISCVProcessor_tb.vhd",
-    "testbenches/VGACard_tb.vhd",
     "quartus_blocks/DualPortRAM.vhd",
     "quartus_blocks/SinglePortROM.vhd",
-    "Main.vhd"
+    "Main.vhd",
+    "testbenches/RISCVProcessor_tb.vhd",
+    "testbenches/VGACard_tb.vhd",
+    "testbenches/Main_tb.vhd",
 ]

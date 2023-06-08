@@ -6,17 +6,20 @@ use work.RISCV.all;
 
 entity RISCVProcessor is
     port (
-        clk          : in std_logic;
+        clk_50mhz    : in std_logic;
         mem_in       : in word_t;
         mem_out      : out word_t;
         mem_addr     : out word_t    := (others => '0');
         mem_write_en : out std_logic := '0';
         mem_byte_en  : out std_logic_vector(3 downto 0);
-        halt         : out std_logic := '0'
+        halt         : out std_logic := '0';
+        output_reg   : out word_t    := ZEROES
     );
 end entity RISCVProcessor;
 
 architecture rtl of RISCVProcessor is
+
+    constant clk_period : time := 20 ns;
 
     -- State Management
     signal prev_st_cntr     : instruction_state_counter_t := 0;
@@ -59,6 +62,8 @@ architecture rtl of RISCVProcessor is
     signal load_store_addr : word_t;
     signal reg_write       : std_logic;
     signal branch_en       : std_logic;
+
+    signal wait_clocks : unsigned(63 downto 0) := to_unsigned(0, 64);
 
 begin
 
@@ -134,16 +139,24 @@ begin
         unsigned(signed(rs1) + signed(imm)) when opcode = IOP_JALR else
         curr_pc + 4;
 
-    process (clk)
+    process (clk_50mhz)
     begin
 
-        if rising_edge(clk) then
+        if rising_edge(clk_50mhz) and wait_clocks /= 0 then
+            wait_clocks <= wait_clocks - 1;
+        end if;
+
+        if rising_edge(clk_50mhz) and wait_clocks = 0 then
 
             if opcode = IOP_ECALL then
                 if register_bank(ECALL_REG) = EC_HALT then
                     halt <= '1';
                 elsif register_bank(ECALL_REG) = EC_READ_CHAR then
                     register_bank(10) <= std_logic_vector(to_unsigned(75, word_t'length));
+                elsif register_bank(ECALL_REG) = EC_OUTPUT_REG then
+                    output_reg <= register_bank(10);
+                elsif register_bank(ECALL_REG) = EC_SLEEP_US then
+                    wait_clocks <= unsigned(register_bank(10)) * (1 us / clk_period);
                 end if;
             end if;
 
@@ -158,7 +171,7 @@ begin
 
         end if;
 
-        if falling_edge(clk) then
+        if falling_edge(clk_50mhz) and wait_clocks = 0 then
 
             if opcode = IOP_STORE and curr_st_cntr = 0 then
                 mem_write_en <= '1';
