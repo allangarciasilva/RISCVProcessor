@@ -16,7 +16,8 @@ entity Main is
         vga_g            : out std_logic_vector(3 downto 0);
         vga_b            : out std_logic_vector(3 downto 0);
         vga_pixel_clk    : out std_logic;
-        processor_output : out word_t
+        processor_output : out word_t;
+        pc               : out std_logic_vector(9 downto 0)
     );
 end entity Main;
 
@@ -47,6 +48,7 @@ begin
     ram_addr_final   <= std_logic_vector(unsigned(proc_out)/4 + unsigned(ram_addr));
     vga_pixel_clk    <= output_pixel_clk and char_clk;
     processor_output <= proc_out;
+    pc               <= mem_addr(9 downto 0);
 
     processor : entity work.RISCVProcessor port map (
         clk_50mhz    => pc_clk,
