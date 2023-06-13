@@ -77,22 +77,22 @@ begin
             q_a       => mem_in,
             q_b       => ram_in);
 
-    vga : entity work.VGACard
-        generic map(
-            amplification => 2
-        )
-        port map(
-            clk_50mhz  => clk_50mhz,
-            ram_in     => ram_in,
-            char_in    => char_in,
-            char_clk   => char_clk,
-            ram_addr   => ram_addr,
-            char_addr  => char_addr,
-            vga_h_sync => open,
-            vga_v_sync => open,
-            vga_r      => open,
-            vga_g      => open,
-            vga_b      => open);
+    -- vga : entity work.VGACard
+    --     generic map(
+    --         amplification => 2
+    --     )
+    --     port map(
+    --         clk_50mhz  => clk_50mhz,
+    --         ram_in     => ram_in,
+    --         char_in    => char_in,
+    --         char_clk   => char_clk,
+    --         ram_addr   => ram_addr,
+    --         char_addr  => char_addr,
+    --         vga_h_sync => open,
+    --         vga_v_sync => open,
+    --         vga_r      => open,
+    --         vga_g      => open,
+    --         vga_b      => open);
 
     vga_h_sync <= '0';
     vga_v_sync <= '0';

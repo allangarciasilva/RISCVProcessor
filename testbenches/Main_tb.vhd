@@ -19,7 +19,6 @@ architecture rtl of Main_tb is
     signal vga_g            : std_logic_vector(3 downto 0);
     signal vga_b            : std_logic_vector(3 downto 0);
     signal vga_pixel_clk    : std_logic;
-    signal processor_output : word_t;
 
 begin
 
@@ -36,7 +35,7 @@ begin
             vga_g            => vga_g,
             vga_b            => vga_b,
             vga_pixel_clk    => vga_pixel_clk,
-            processor_output => processor_output
+            processor_output => open
         );
 
     log : process (vga_pixel_clk)
