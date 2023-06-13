@@ -105,7 +105,7 @@ begin
         (v_counter/amplification) mod char_side_length when RST_VISIBLE_AREA,
         0 when others;
 
-    pixel_idx <= (7 - v_pixel_idx) * 8 + (7 - h_pixel_idx);
+    pixel_idx <= v_pixel_idx * 8 + (7 - h_pixel_idx);
 
     with char_in(pixel_idx) select selected_color <=
     foreground_color when '1',

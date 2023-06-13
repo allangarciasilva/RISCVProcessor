@@ -23,7 +23,8 @@ begin
 
     dut : entity work.Main
         generic map(
-            path_prefix => "../"
+            path_prefix => "../",
+            output_pixel_clk => '1'
         )
         port map(
             clk_50mhz     => clk_50mhz,
@@ -69,7 +70,7 @@ begin
     clk : process
     begin
 
-        while now < 18.5 ms loop
+        while true loop
 
             clk_50mhz <= '0';
             wait for period_50mhz/2;

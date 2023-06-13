@@ -5,7 +5,8 @@ use work.RISCV.all;
 
 entity Main is
     generic (
-        path_prefix : string := ""
+        path_prefix      : string    := "";
+        output_pixel_clk : std_logic := '0'
     );
     port (
         clk_50mhz     : in std_logic;
@@ -43,10 +44,10 @@ begin
 
     pc_clk         <= clk_50mhz and (not halt);
     ram_addr_final <= std_logic_vector(unsigned(proc_out)/4 + unsigned(ram_addr));
-    vga_pixel_clk  <= char_clk;
+    vga_pixel_clk  <= output_pixel_clk and char_clk;
 
     processor : entity work.RISCVProcessor port map (
-        clk_50mhz          => pc_clk,
+        clk_50mhz    => pc_clk,
         mem_in       => mem_in,
         mem_out      => mem_out,
         mem_addr     => mem_addr,
