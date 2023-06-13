@@ -11,14 +11,19 @@ entity debouncer_test is
 end entity debouncer_test;
 
 architecture rtl of debouncer_test is
+
+    signal contador : unsigned(9 downto 0);
+
 begin
+
+    contr <= std_logic_vector(contador);
 
     process (clk_manual)
     begin
 
         if rising_edge(clk_manual) then
 
-            contr <= std_logic_vector(unsigned(contr) + 1);
+            contador <= contador + 1;
 
         end if;
 
