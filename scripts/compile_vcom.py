@@ -18,9 +18,9 @@ files = [
     "VGACard/VGACard.vhd",
     "quartus_blocks/DualPortRAM.vhd",
     "quartus_blocks/SinglePortROM.vhd",
+    "VGACard/VGA_main.vhd",
     "Main.vhd",
     "testbenches/RISCVProcessor_tb.vhd",
-    "testbenches/VGACard_tb.vhd",
     "testbenches/Main_tb.vhd",
 ]
 

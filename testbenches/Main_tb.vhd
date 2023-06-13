@@ -3,6 +3,7 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use IEEE.std_logic_textio.all;
 use std.textio.all;
+use work.RISCV.all;
 
 entity Main_tb is
 end entity Main_tb;
@@ -11,29 +12,31 @@ architecture rtl of Main_tb is
 
     constant period_50mhz : time := 20 ns;
 
-    signal clk_50mhz     : std_logic;
-    signal vga_h_sync    : std_logic;
-    signal vga_v_sync    : std_logic;
-    signal vga_r         : std_logic_vector(3 downto 0);
-    signal vga_g         : std_logic_vector(3 downto 0);
-    signal vga_b         : std_logic_vector(3 downto 0);
-    signal vga_pixel_clk : std_logic;
+    signal clk_50mhz        : std_logic;
+    signal vga_h_sync       : std_logic;
+    signal vga_v_sync       : std_logic;
+    signal vga_r            : std_logic_vector(3 downto 0);
+    signal vga_g            : std_logic_vector(3 downto 0);
+    signal vga_b            : std_logic_vector(3 downto 0);
+    signal vga_pixel_clk    : std_logic;
+    signal processor_output : word_t;
 
 begin
 
     dut : entity work.Main
         generic map(
-            path_prefix => "../",
+            path_prefix      => "../",
             output_pixel_clk => '1'
         )
         port map(
-            clk_50mhz     => clk_50mhz,
-            vga_h_sync    => vga_h_sync,
-            vga_v_sync    => vga_v_sync,
-            vga_r         => vga_r,
-            vga_g         => vga_g,
-            vga_b         => vga_b,
-            vga_pixel_clk => vga_pixel_clk
+            clk_50mhz        => clk_50mhz,
+            vga_h_sync       => vga_h_sync,
+            vga_v_sync       => vga_v_sync,
+            vga_r            => vga_r,
+            vga_g            => vga_g,
+            vga_b            => vga_b,
+            vga_pixel_clk    => vga_pixel_clk,
+            processor_output => processor_output
         );
 
     log : process (vga_pixel_clk)
