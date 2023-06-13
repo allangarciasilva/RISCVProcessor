@@ -1,5 +1,5 @@
 build
-memory_files
+# memory_files
 vsim
 
 # ignore Quartus II generated files
