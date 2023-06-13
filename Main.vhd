@@ -30,13 +30,13 @@ architecture rtl of Main is
     signal mem_write_en : std_logic;
     signal mem_byte_en  : std_logic_vector(3 downto 0);
     signal halt         : std_logic;
-    signal char_clk     : std_logic;
+    signal char_clk     : std_logic := '0';
 
-    signal char_addr : std_logic_vector(7 downto 0);
-    signal char_in   : std_logic_vector(63 downto 0);
+    signal char_addr : std_logic_vector(7 downto 0) := (others => '0');
+    signal char_in   : std_logic_vector(63 downto 0) := (others => '0');
 
-    signal ram_addr : word_t;
-    signal ram_in   : word_t;
+    signal ram_addr : word_t := (others => '0');
+    signal ram_in   : word_t := (others => '0');
 
     signal pc_clk         : std_logic;
     signal proc_out       : word_t;
