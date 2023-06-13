@@ -16,6 +16,7 @@ riscv.files = [
     "quartus_blocks/SinglePortROM.vhd",
     "Main.vhd",
     "VGACard/VGA_main.vhd",
+    "VGACard/debouncer_test.vhd",
     "testbenches/RISCVProcessor_tb.vhd",
     "testbenches/VGACard_tb.vhd",
     "testbenches/Main_tb.vhd",
