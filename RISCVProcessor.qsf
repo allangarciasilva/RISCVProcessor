@@ -94,7 +94,7 @@ set_location_assignment PIN_K7 -to vga_g[1]
 set_location_assignment PIN_J7 -to vga_g[2]
 set_location_assignment PIN_J8 -to vga_g[3]
 set_location_assignment PIN_H8 -to vga_h_sync
-set_location_assignment PIN_AA2 -to vga_pixel_clk
+set_location_assignment PIN_W19 -to vga_pixel_clk
 set_location_assignment PIN_A9 -to vga_r[0]
 set_location_assignment PIN_B10 -to vga_r[1]
 set_location_assignment PIN_C9 -to vga_r[2]
