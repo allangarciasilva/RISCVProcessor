@@ -145,7 +145,8 @@ begin
     curr_st_cntr <= 0;
     reg_write <= '0';
 
-    output_reg <= std_logic_vector(curr_pc);
+    -- output_reg <= std_logic_vector(curr_pc);
+    output_reg <= ZEROES;
 
     process (clk_50mhz, wait_clocks)
     begin
