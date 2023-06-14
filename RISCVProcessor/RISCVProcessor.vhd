@@ -153,7 +153,7 @@ begin
     halt           <= self_halt;
     should_execute <= (wait_clocks = 0) and (self_halt = '0');
 
-    process (clk_50mhz, wait_clocks)
+    process (clk_50mhz, wait_clocks, should_execute)
     begin
 
         if rising_edge(clk_50mhz) and wait_clocks /= 0 then

@@ -32,7 +32,7 @@ architecture rtl of Main is
     signal halt         : std_logic;
     signal char_clk     : std_logic := '0';
 
-    signal char_addr : std_logic_vector(7 downto 0) := (others => '0');
+    signal char_addr : std_logic_vector(7 downto 0)  := (others => '0');
     signal char_in   : std_logic_vector(63 downto 0) := (others => '0');
 
     signal ram_addr : word_t := (others => '0');
@@ -47,7 +47,7 @@ begin
     pc_clk           <= clk_50mhz;
     ram_addr_final   <= std_logic_vector(unsigned(proc_out)/4 + unsigned(ram_addr));
     vga_pixel_clk    <= output_pixel_clk and char_clk;
-    processor_output <= proc_out;
+    processor_output <= (others => halt);
     pc               <= mem_addr(9 downto 0);
 
     processor : entity work.RISCVProcessor port map (
