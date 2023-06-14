@@ -145,7 +145,7 @@ begin
     curr_st_cntr <= 0;
     reg_write <= '0';
 
-    process (clk_50mhz)
+    process (clk_50mhz, wait_clocks)
     begin
 
         if rising_edge(clk_50mhz) and wait_clocks /= 0 then
