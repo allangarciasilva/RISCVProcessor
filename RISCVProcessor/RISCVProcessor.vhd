@@ -163,14 +163,14 @@ begin
         if rising_edge(clk_50mhz) and should_execute then
 
             if opcode = IOP_ECALL then
-                if register_bank(ECALL_REG) = EC_HALT then
-                    self_halt <= '1';
-                elsif register_bank(ECALL_REG) = EC_READ_CHAR then
+                if register_bank(ECALL_REG) = EC_READ_CHAR then
                     register_bank(10) <= std_logic_vector(to_unsigned(75, word_t'length));
                 elsif register_bank(ECALL_REG) = EC_OUTPUT_REG then
                     output_reg <= register_bank(10);
                 elsif register_bank(ECALL_REG) = EC_SLEEP_US then
                     wait_clocks <= unsigned(register_bank(10)) * (1 us / clk_period);
+                -- elsif register_bank(ECALL_REG) = EC_HALT then
+                --     self_halt <= '1';
                 end if;
             end if;
 
