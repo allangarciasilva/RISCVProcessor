@@ -65,6 +65,9 @@ architecture rtl of RISCVProcessor is
 
     signal wait_clocks : unsigned(63 downto 0) := to_unsigned(0, 64);
 
+    signal self_halt      : std_logic := '0';
+    signal should_execute : boolean   := true;
+
 begin
 
     load_store_addr <= std_logic_vector(signed(rs1) + signed(imm));
@@ -147,6 +150,9 @@ begin
 
     -- output_reg <= ZEROES;
 
+    halt           <= self_halt;
+    should_execute <= (wait_clocks = 0) and (self_halt = '0');
+
     process (clk_50mhz, wait_clocks)
     begin
 
@@ -154,11 +160,11 @@ begin
             wait_clocks <= wait_clocks - 1;
         end if;
 
-        if rising_edge(clk_50mhz) and wait_clocks = 0 then
+        if rising_edge(clk_50mhz) and should_execute then
 
             if opcode = IOP_ECALL then
                 if register_bank(ECALL_REG) = EC_HALT then
-                    halt <= '1';
+                    self_halt <= '1';
                 elsif register_bank(ECALL_REG) = EC_READ_CHAR then
                     register_bank(10) <= std_logic_vector(to_unsigned(75, word_t'length));
                 elsif register_bank(ECALL_REG) = EC_OUTPUT_REG then
@@ -179,7 +185,7 @@ begin
 
         end if;
 
-        if falling_edge(clk_50mhz) and wait_clocks = 0 then
+        if falling_edge(clk_50mhz) and should_execute then
 
             if opcode = IOP_STORE and curr_st_cntr = 0 then
                 mem_write_en <= '1';
