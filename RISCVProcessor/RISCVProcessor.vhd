@@ -145,7 +145,7 @@ begin
     -- reg_write        <= '0';
     -- output_reg <= std_logic_vector(curr_pc);
 
-    output_reg <= ZEROES;
+    -- output_reg <= ZEROES;
 
     process (clk_50mhz, wait_clocks)
     begin
