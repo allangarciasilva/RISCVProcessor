@@ -13,7 +13,7 @@ entity RISCVProcessor is
         mem_write_en : out std_logic := '0';
         mem_byte_en  : out std_logic_vector(3 downto 0);
         halt         : out std_logic := '0';
-        output_reg   : out word_t := (others => '1')
+        output_reg   : out word_t    := ZEROES
     );
 end entity RISCVProcessor;
 
@@ -67,72 +67,72 @@ architecture rtl of RISCVProcessor is
 
 begin
 
-    -- load_store_addr <= std_logic_vector(signed(rs1) + signed(imm));
+    load_store_addr <= std_logic_vector(signed(rs1) + signed(imm));
 
-    -- rs1_idx <= to_integer(unsigned(inst(19 downto 15)));
-    -- rs2_idx <= to_integer(unsigned(inst(24 downto 20)));
-    -- rd_idx  <= to_integer(unsigned(inst(11 downto 7)));
+    rs1_idx <= to_integer(unsigned(inst(19 downto 15)));
+    rs2_idx <= to_integer(unsigned(inst(24 downto 20)));
+    rd_idx  <= to_integer(unsigned(inst(11 downto 7)));
 
-    -- rs1 <= register_bank(rs1_idx);
-    -- rs2 <= register_bank(rs2_idx);
+    rs1 <= register_bank(rs1_idx);
+    rs2 <= register_bank(rs2_idx);
 
-    -- opcode <= get_opcode(inst);
+    opcode <= get_opcode(inst);
 
-    -- inst <= mem_in when curr_st_cntr = 0 else
-    --     prev_inst;
+    inst <= mem_in when curr_st_cntr = 0 else
+        prev_inst;
 
-    -- inst_fmt_sel : entity work.InstructionFormatSelector port map (
-    --     inst => inst,
-    --     fmt  => inst_fmt);
+    inst_fmt_sel : entity work.InstructionFormatSelector port map (
+        inst => inst,
+        fmt  => inst_fmt);
 
-    -- imm_gen : entity work.ImmediateGenerator port map (
-    --     inst => inst,
-    --     imm  => imm);
+    imm_gen : entity work.ImmediateGenerator port map (
+        inst => inst,
+        imm  => imm);
 
-    -- alu : entity work.ALUSelector port map (
-    --     inst     => inst,
-    --     inst_fmt => inst_fmt,
-    --     imm      => imm,
-    --     rs1      => rs1,
-    --     rs2      => rs2,
-    --     result   => alu_result);
+    alu : entity work.ALUSelector port map (
+        inst     => inst,
+        inst_fmt => inst_fmt,
+        imm      => imm,
+        rs1      => rs1,
+        rs2      => rs2,
+        result   => alu_result);
 
-    -- inst_st_selector : entity work.InstructionStateSelector port map (
-    --     opcode    => prev_inst(6 downto 0),
-    --     prev_cntr => prev_st_cntr,
-    --     next_cntr => curr_st_cntr);
+    inst_st_selector : entity work.InstructionStateSelector port map (
+        opcode    => prev_inst(6 downto 0),
+        prev_cntr => prev_st_cntr,
+        next_cntr => curr_st_cntr);
 
-    -- max_cntr_selector : entity work.InstructionStateMaxCounterSelector port map (
-    --     opcode   => opcode,
-    --     max_cntr => max_cntr_by_inst);
+    max_cntr_selector : entity work.InstructionStateMaxCounterSelector port map (
+        opcode   => opcode,
+        max_cntr => max_cntr_by_inst);
 
-    -- control_unit : entity work.ControlUnit port map (
-    --     opcode    => opcode,
-    --     st_cntr   => curr_st_cntr,
-    --     reg_write => reg_write);
+    control_unit : entity work.ControlUnit port map (
+        opcode    => opcode,
+        st_cntr   => curr_st_cntr,
+        reg_write => reg_write);
 
-    -- mem_masker : entity work.MemoryMasker port map(
-    --     inst        => inst,
-    --     mem_in      => mem_in,
-    --     mem_addr    => load_store_addr,
-    --     rs2         => rs2,
-    --     rd          => masked_mem_in,
-    --     mem_byte_en => mem_byte_en,
-    --     mem_out     => mem_out);
+    mem_masker : entity work.MemoryMasker port map(
+        inst        => inst,
+        mem_in      => mem_in,
+        mem_addr    => load_store_addr,
+        rs2         => rs2,
+        rd          => masked_mem_in,
+        mem_byte_en => mem_byte_en,
+        mem_out     => mem_out);
 
-    -- branch_detector : entity work.BranchDetector port map (
-    --     inst      => inst,
-    --     rs1       => rs1,
-    --     rs2       => rs2,
-    --     branch_en => branch_en);
+    branch_detector : entity work.BranchDetector port map (
+        inst      => inst,
+        rs1       => rs1,
+        rs2       => rs2,
+        branch_en => branch_en);
 
-    -- with opcode select rd <=
-    --     alu_result when IOP_IMM_ARITH | IOP_REG_ARITH,
-    --     std_logic_vector(curr_pc + 4) when IOP_JAL | IOP_JALR | IOP_BRANCH,
-    --     masked_mem_in when IOP_LOAD,
-    --     imm when IOP_LUI,
-    --     std_logic_vector(signed(curr_pc) + signed(imm)) when IOP_AUIPC,
-    --     ZEROES when others;
+    with opcode select rd <=
+        alu_result when IOP_IMM_ARITH | IOP_REG_ARITH,
+        std_logic_vector(curr_pc + 4) when IOP_JAL | IOP_JALR | IOP_BRANCH,
+        masked_mem_in when IOP_LOAD,
+        imm when IOP_LUI,
+        std_logic_vector(signed(curr_pc) + signed(imm)) when IOP_AUIPC,
+        ZEROES when others;
 
     next_pc <=
         unsigned(signed(curr_pc) + signed(imm)) when opcode = IOP_JAL or (opcode = IOP_BRANCH and branch_en = '1') else
@@ -141,11 +141,11 @@ begin
 
     opcode <= (others => '0');
 
-    max_cntr_by_inst <= 1;
-    curr_st_cntr <= 0;
-    reg_write <= '0';
-
+    -- max_cntr_by_inst <= 1;
+    -- curr_st_cntr     <= 0;
+    -- reg_write        <= '0';
     -- output_reg <= std_logic_vector(curr_pc);
+    
     output_reg <= ZEROES;
 
     process (clk_50mhz, wait_clocks)
