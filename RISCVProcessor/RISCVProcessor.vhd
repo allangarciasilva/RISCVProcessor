@@ -139,13 +139,12 @@ begin
         unsigned(signed(rs1) + signed(imm)) when opcode = IOP_JALR else
         curr_pc + 4;
 
-    opcode <= (others => '0');
-
+    -- opcode <= (others => '0');
     -- max_cntr_by_inst <= 1;
     -- curr_st_cntr     <= 0;
     -- reg_write        <= '0';
     -- output_reg <= std_logic_vector(curr_pc);
-    
+
     output_reg <= ZEROES;
 
     process (clk_50mhz, wait_clocks)
