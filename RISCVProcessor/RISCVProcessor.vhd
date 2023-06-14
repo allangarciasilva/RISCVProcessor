@@ -13,7 +13,7 @@ entity RISCVProcessor is
         mem_write_en : out std_logic := '0';
         mem_byte_en  : out std_logic_vector(3 downto 0);
         halt         : out std_logic := '0';
-        output_reg   : out word_t    := ZEROES
+        output_reg   : out word_t := (others => '1')
     );
 end entity RISCVProcessor;
 
@@ -145,6 +145,8 @@ begin
     curr_st_cntr <= 0;
     reg_write <= '0';
 
+    output_reg <= std_logic_vector(curr_pc);
+
     process (clk_50mhz, wait_clocks)
     begin
 
@@ -154,17 +156,17 @@ begin
 
         if rising_edge(clk_50mhz) and wait_clocks = 0 then
 
-            if opcode = IOP_ECALL then
-                if register_bank(ECALL_REG) = EC_HALT then
-                    halt <= '1';
-                elsif register_bank(ECALL_REG) = EC_READ_CHAR then
-                    register_bank(10) <= std_logic_vector(to_unsigned(75, word_t'length));
-                elsif register_bank(ECALL_REG) = EC_OUTPUT_REG then
-                    output_reg <= register_bank(10);
-                elsif register_bank(ECALL_REG) = EC_SLEEP_US then
-                    wait_clocks <= unsigned(register_bank(10)) * (1 us / clk_period);
-                end if;
-            end if;
+            -- if opcode = IOP_ECALL then
+            --     if register_bank(ECALL_REG) = EC_HALT then
+            --         halt <= '1';
+            --     elsif register_bank(ECALL_REG) = EC_READ_CHAR then
+            --         register_bank(10) <= std_logic_vector(to_unsigned(75, word_t'length));
+            --     elsif register_bank(ECALL_REG) = EC_OUTPUT_REG then
+            --         output_reg <= register_bank(10);
+            --     elsif register_bank(ECALL_REG) = EC_SLEEP_US then
+            --         wait_clocks <= unsigned(register_bank(10)) * (1 us / clk_period);
+            --     end if;
+            -- end if;
 
             if reg_write = '1' then
                 register_bank(rd_idx) <= rd;

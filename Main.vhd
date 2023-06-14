@@ -47,7 +47,7 @@ begin
     pc_clk           <= clk_50mhz and (not halt);
     ram_addr_final   <= std_logic_vector(unsigned(proc_out)/4 + unsigned(ram_addr));
     vga_pixel_clk    <= output_pixel_clk and char_clk;
-    processor_output <= mem_addr;
+    processor_output <= proc_out;
     pc               <= mem_addr(9 downto 0);
 
     processor : entity work.RISCVProcessor port map (
