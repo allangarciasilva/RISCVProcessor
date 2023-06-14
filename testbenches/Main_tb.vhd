@@ -74,10 +74,10 @@ begin
 
         while true loop
 
-            clk_50mhz <= '0';
+            clk_50mhz <= '1';
             wait for period_50mhz/2;
 
-            clk_50mhz <= '1';
+            clk_50mhz <= '0';
             wait for period_50mhz/2;
 
         end loop;
