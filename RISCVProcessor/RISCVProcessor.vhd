@@ -157,32 +157,36 @@ begin
     process (clk_50mhz, wait_clocks, should_execute)
     begin
 
-        if rising_edge(clk_50mhz) and wait_clocks /= 0 then
-            wait_clocks <= wait_clocks - 1;
-        end if;
+        if rising_edge(clk_50mhz) then
 
-        if rising_edge(clk_50mhz) and should_execute then
+            if wait_clocks /= 0 then
+                wait_clocks <= wait_clocks - 1;
+            end if;
 
-            if opcode = IOP_ECALL then
-                if register_bank(ECALL_REG) = EC_READ_CHAR then
-                    register_bank(10) <= std_logic_vector(to_unsigned(75, word_t'length));
-                -- elsif register_bank(ECALL_REG) = EC_OUTPUT_REG then
-                    -- output_reg <= register_bank(10);
-                elsif register_bank(ECALL_REG) = EC_SLEEP_US then
-                    wait_clocks <= unsigned(register_bank(10)) * (1 us / clk_period);
-                elsif register_bank(ECALL_REG) = EC_HALT then
-                    self_halt <= '1';
+            if (wait_clocks = 0) and (self_halt = '0') then
+
+                if opcode = IOP_ECALL then
+                    if register_bank(ECALL_REG) = EC_READ_CHAR then
+                        register_bank(10) <= std_logic_vector(to_unsigned(75, word_t'length));
+                    elsif register_bank(ECALL_REG) = EC_OUTPUT_REG then
+                        output_reg <= register_bank(10);
+                    elsif register_bank(ECALL_REG) = EC_SLEEP_US then
+                        wait_clocks <= unsigned(register_bank(10)) * (1 us / clk_period);
+                    elsif register_bank(ECALL_REG) = EC_HALT then
+                        self_halt <= '1';
+                    end if;
                 end if;
-            end if;
 
-            if reg_write = '1' then
-                register_bank(rd_idx) <= rd;
-            end if;
-            register_bank(0) <= ZEROES;
+                if reg_write = '1' then
+                    register_bank(rd_idx) <= rd;
+                end if;
+                register_bank(0) <= ZEROES;
 
-            curr_pc      <= mem_pc;
-            prev_st_cntr <= curr_st_cntr;
-            prev_inst    <= inst;
+                curr_pc      <= mem_pc;
+                prev_st_cntr <= curr_st_cntr;
+                prev_inst    <= inst;
+
+            end if;
 
         end if;
 
