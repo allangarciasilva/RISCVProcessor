@@ -149,7 +149,7 @@ begin
     -- output_reg <= std_logic_vector(curr_pc);
 
     -- output_reg <= ZEROES;
-    output_reg <= std_logic_vector(wait_clocks);
+    output_reg <= std_logic_vector(wait_clocks(31 downto 0));
 
     halt           <= self_halt;
     should_execute <= (wait_clocks = 0) and (self_halt = '0');
