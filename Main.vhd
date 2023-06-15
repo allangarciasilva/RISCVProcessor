@@ -49,7 +49,7 @@ begin
     vga_pixel_clk    <= output_pixel_clk and char_clk;
     processor_output <= proc_out;
     -- pc               <= mem_addr(9 downto 0);
-    pc               <= ZEROES;
+    pc <= (others => '0');
 
     processor : entity work.RISCVProcessor port map (
         clk_50mhz    => pc_clk,
@@ -78,28 +78,22 @@ begin
             q_a       => mem_in,
             q_b       => ram_in);
 
-    -- vga : entity work.VGACard
-    --     generic map(
-    --         amplification => 2
-    --     )
-    --     port map(
-    --         clk_50mhz  => clk_50mhz,
-    --         ram_in     => ram_in,
-    --         char_in    => char_in,
-    --         char_clk   => char_clk,
-    --         ram_addr   => ram_addr,
-    --         char_addr  => char_addr,
-    --         vga_h_sync => open,
-    --         vga_v_sync => open,
-    --         vga_r      => open,
-    --         vga_g      => open,
-    --         vga_b      => open);
-
-    vga_h_sync <= '0';
-    vga_v_sync <= '0';
-    vga_r      <= (others => '0');
-    vga_g      <= (others => '0');
-    vga_b      <= (others => '0');
+    vga : entity work.VGACard
+        generic map(
+            amplification => 2
+        )
+        port map(
+            clk_50mhz  => clk_50mhz,
+            ram_in     => ram_in,
+            char_in    => char_in,
+            char_clk   => char_clk,
+            ram_addr   => ram_addr,
+            char_addr  => char_addr,
+            vga_h_sync => vga_h_sync,
+            vga_v_sync => vga_v_sync,
+            vga_r      => vga_r,
+            vga_g      => vga_g,
+            vga_b      => vga_b);
 
     rom : entity work.SinglePortROM
         generic map(
