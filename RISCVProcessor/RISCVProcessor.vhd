@@ -65,8 +65,7 @@ architecture rtl of RISCVProcessor is
 
     signal wait_clocks : unsigned(63 downto 0) := to_unsigned(0, 64);
 
-    signal self_halt      : std_logic := '0';
-    signal should_execute : boolean   := true;
+    signal self_halt : std_logic := '0';
 
 begin
 
@@ -142,19 +141,9 @@ begin
         unsigned(signed(rs1) + signed(imm)) when opcode = IOP_JALR else
         curr_pc + 4;
 
-    -- opcode <= (others => '0');
-    -- max_cntr_by_inst <= 1;
-    -- curr_st_cntr     <= 0;
-    -- reg_write        <= '0';
-    -- output_reg <= std_logic_vector(curr_pc);
+    halt <= self_halt;
 
-    -- output_reg <= ZEROES;
-    -- output_reg <= std_logic_vector(wait_clocks(31 downto 0));
-
-    halt           <= self_halt;
-    should_execute <= (wait_clocks = 0) and (self_halt = '0');
-
-    process (clk_50mhz, wait_clocks, should_execute)
+    process (clk_50mhz, wait_clocks)
     begin
 
         if rising_edge(clk_50mhz) then
@@ -190,19 +179,23 @@ begin
 
         end if;
 
-        if falling_edge(clk_50mhz) and should_execute then
+        if falling_edge(clk_50mhz) then
 
-            if opcode = IOP_STORE and curr_st_cntr = 0 then
-                mem_write_en <= '1';
-            else
-                mem_write_en <= '0';
-            end if;
+            if (wait_clocks = 0) and (self_halt = '0') then
 
-            if curr_st_cntr = max_cntr_by_inst - 1 then
-                mem_pc   <= next_pc;
-                mem_addr <= std_logic_vector(next_pc);
-            else
-                mem_addr <= load_store_addr;
+                if opcode = IOP_STORE and curr_st_cntr = 0 then
+                    mem_write_en <= '1';
+                else
+                    mem_write_en <= '0';
+                end if;
+
+                if curr_st_cntr = max_cntr_by_inst - 1 then
+                    mem_pc   <= next_pc;
+                    mem_addr <= std_logic_vector(next_pc);
+                else
+                    mem_addr <= load_store_addr;
+                end if;
+
             end if;
 
         end if;
