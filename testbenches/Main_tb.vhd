@@ -12,13 +12,13 @@ architecture rtl of Main_tb is
 
     constant period_50mhz : time := 20 ns;
 
-    signal clk_50mhz        : std_logic;
-    signal vga_h_sync       : std_logic;
-    signal vga_v_sync       : std_logic;
-    signal vga_r            : std_logic_vector(3 downto 0);
-    signal vga_g            : std_logic_vector(3 downto 0);
-    signal vga_b            : std_logic_vector(3 downto 0);
-    signal vga_pixel_clk    : std_logic;
+    signal clk_50mhz     : std_logic;
+    signal vga_h_sync    : std_logic;
+    signal vga_v_sync    : std_logic;
+    signal vga_r         : std_logic_vector(3 downto 0);
+    signal vga_g         : std_logic_vector(3 downto 0);
+    signal vga_b         : std_logic_vector(3 downto 0);
+    signal vga_pixel_clk : std_logic;
 
 begin
 
@@ -28,6 +28,7 @@ begin
             output_pixel_clk => '1'
         )
         port map(
+            clk_btn          => clk_50mhz,
             clk_50mhz        => clk_50mhz,
             vga_h_sync       => vga_h_sync,
             vga_v_sync       => vga_v_sync,
