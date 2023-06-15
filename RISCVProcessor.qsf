@@ -69,6 +69,7 @@ set_global_assignment -name VHDL_FILE Main.vhd
 set_global_assignment -name VHDL_FILE VGACard/debouncer_test.vhd
 
 set_location_assignment PIN_M9 -to clk_50mhz
+set_location_assignment PIN_U7 -to clk_btn
 set_location_assignment PIN_B6 -to vga_b[0]
 set_location_assignment PIN_B7 -to vga_b[1]
 set_location_assignment PIN_A8 -to vga_b[2]
