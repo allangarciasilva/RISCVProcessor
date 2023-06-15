@@ -68,22 +68,6 @@ set_global_assignment -name VHDL_FILE quartus_blocks/SinglePortROM.vhd
 set_global_assignment -name VHDL_FILE Main.vhd
 set_global_assignment -name VHDL_FILE VGACard/debouncer_test.vhd
 
-#set_location_assignment PIN_M9 -to clk_50mhz
-#set_location_assignment PIN_A7 -to vga_b[3]
-#set_location_assignment PIN_A8 -to vga_b[2]
-#set_location_assignment PIN_B7 -to vga_b[1]
-#set_location_assignment PIN_B6 -to vga_b[0]
-#set_location_assignment PIN_J8 -to vga_g[3]
-#set_location_assignment PIN_J7 -to vga_g[2]
-#set_location_assignment PIN_K7 -to vga_g[1]
-#set_location_assignment PIN_L7 -to vga_g[0]
-#set_location_assignment PIN_H8 -to vga_h_sync
-#set_location_assignment PIN_A5 -to vga_r[3]
-#set_location_assignment PIN_C9 -to vga_r[2]
-#set_location_assignment PIN_B10 -to vga_r[1]
-#set_location_assignment PIN_A9 -to vga_r[0]
-#set_location_assignment PIN_G8 -to vga_v_sync
-
 set_location_assignment PIN_M9 -to clk_50mhz
 set_location_assignment PIN_B6 -to vga_b[0]
 set_location_assignment PIN_B7 -to vga_b[1]
