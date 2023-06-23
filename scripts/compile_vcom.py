@@ -4,6 +4,7 @@ import subprocess
 SIMULATION_DIR = "simulation"
 
 files = [
+    "quartus_blocks/ProcessorPLL/ProcessorPLL_sim/ProcessorPLL.vho",
     "RISCVProcessor/common.vhd",
     "RISCVProcessor/ALU.vhd",
     "RISCVProcessor/ALUSelector.vhd",

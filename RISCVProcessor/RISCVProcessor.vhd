@@ -7,6 +7,7 @@ use work.RISCV.all;
 entity RISCVProcessor is
     port (
         clk_50mhz    : in std_logic;
+        reset        : in std_logic;
         mem_in       : in word_t;
         mem_out      : out word_t;
         mem_addr     : out word_t    := (others => '0');
@@ -143,7 +144,7 @@ begin
 
     halt <= self_halt;
 
-    process (clk_50mhz, wait_clocks)
+    process (clk_50mhz, wait_clocks, reset)
     begin
 
         if rising_edge(clk_50mhz) then
@@ -174,6 +175,16 @@ begin
                 curr_pc      <= mem_pc;
                 prev_st_cntr <= curr_st_cntr;
                 prev_inst    <= inst;
+
+            end if;
+
+            if reset = '1' then
+
+                mem_pc        <= (others => '0');
+                curr_pc       <= (others => '0');
+                wait_clocks   <= (others => '0');
+                prev_st_cntr  <= 0;
+                register_bank <= (others => ZEROES);
 
             end if;
 

@@ -30,8 +30,8 @@ architecture rtl of Main is
     signal mem_addr     : word_t;
     signal mem_write_en : std_logic;
     signal mem_byte_en  : std_logic_vector(3 downto 0);
-    signal halt         : std_logic;
     signal char_clk     : std_logic := '0';
+    signal proc_reset   : std_logic := '1';
 
     signal char_addr : std_logic_vector(7 downto 0)  := (others => '0');
     signal char_in   : std_logic_vector(63 downto 0) := (others => '0');
@@ -43,14 +43,24 @@ architecture rtl of Main is
     signal proc_out       : word_t;
     signal ram_addr_final : word_t;
 
+    signal pll_locked : std_logic;
+
 begin
 
-    pc_clk           <= clk_50mhz;
+    -- pc_clk           <= clk_50mhz;
     ram_addr_final   <= std_logic_vector(unsigned(proc_out)/4 + unsigned(ram_addr));
     vga_pixel_clk    <= output_pixel_clk and char_clk;
     processor_output <= proc_out;
     pc               <= mem_addr(9 downto 0);
     -- pc <= (others => '0');
+
+    pll : entity work.ProcessorPLL port map (
+        refclk   => clk_50mhz,
+        rst      => '0',
+        outclk_0 => pc_clk,
+        locked   => pll_locked);
+
+    proc_reset <= not pll_locked;
 
     processor : entity work.RISCVProcessor port map (
         clk_50mhz    => pc_clk,
@@ -59,7 +69,8 @@ begin
         mem_addr     => mem_addr,
         mem_write_en => mem_write_en,
         mem_byte_en  => mem_byte_en,
-        halt         => halt,
+        halt         => open,
+        reset        => proc_reset,
         output_reg   => proc_out);
 
     mem : entity work.DualPortRAM
@@ -68,7 +79,7 @@ begin
             address_width       => mem_address_width,
             initialization_file => path_prefix & "memory_files/memory_init.mif")
         port map(
-            clk       => clk_50mhz,
+            clk       => pc_clk,
             address_a => mem_addr(mem_address_width + 1 downto 2),
             address_b => ram_addr_final(mem_address_width - 1 downto 0),
             data_a    => mem_out,

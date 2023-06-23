@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simPackage>
+ <file path="ProcessorPLL_sim/ProcessorPLL.vho" type="VHDL" />
+ <topLevel name="ProcessorPLL" />
+ <deviceFamily name="cyclonev" />
+</simPackage>
