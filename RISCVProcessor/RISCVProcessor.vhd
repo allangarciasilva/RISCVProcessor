@@ -180,7 +180,6 @@ begin
 
             if reset = '1' then
 
-                mem_pc        <= (others => '0');
                 curr_pc       <= (others => '0');
                 wait_clocks   <= (others => '0');
                 prev_st_cntr  <= 0;

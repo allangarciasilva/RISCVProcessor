@@ -50,23 +50,6 @@ set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name NUM_PARALLEL_PROCESSORS 4
-set_global_assignment -name VHDL_FILE VGACard/VGA_main.vhd
-set_global_assignment -name VHDL_FILE RISCVProcessor/common.vhd
-set_global_assignment -name VHDL_FILE RISCVProcessor/ALU.vhd
-set_global_assignment -name VHDL_FILE RISCVProcessor/ALUSelector.vhd
-set_global_assignment -name VHDL_FILE RISCVProcessor/BranchDetector.vhd
-set_global_assignment -name VHDL_FILE RISCVProcessor/ControlUnit.vhd
-set_global_assignment -name VHDL_FILE RISCVProcessor/InstructionFormatSelector.vhd
-set_global_assignment -name VHDL_FILE RISCVProcessor/ImmediateGenerator.vhd
-set_global_assignment -name VHDL_FILE RISCVProcessor/InstructionStateMaxCounterSelector.vhd
-set_global_assignment -name VHDL_FILE RISCVProcessor/InstructionStateSelector.vhd
-set_global_assignment -name VHDL_FILE RISCVProcessor/MemoryMasker.vhd
-set_global_assignment -name VHDL_FILE RISCVProcessor/RISCVProcessor.vhd
-set_global_assignment -name VHDL_FILE VGACard/VGACard.vhd
-set_global_assignment -name VHDL_FILE quartus_blocks/DualPortRAM.vhd
-set_global_assignment -name VHDL_FILE quartus_blocks/SinglePortROM.vhd
-set_global_assignment -name VHDL_FILE Main.vhd
-set_global_assignment -name VHDL_FILE VGACard/debouncer_test.vhd
 
 set_location_assignment PIN_M9 -to clk_50mhz
 set_location_assignment PIN_U7 -to clk_btn
@@ -131,7 +114,6 @@ set_location_assignment PIN_L1 -to pc[9]
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 
 set_global_assignment  -name PHYSICAL_SYNTHESIS_EFFORT  FAST
 set_global_assignment  -name FITTER_EFFORT              FAST_FIT
@@ -142,3 +124,24 @@ set_global_assignment  -name FITTER_EFFORT              FAST_FIT
 # set_global_assignment -name HYPER_RETIMER_FAST_FORWARD "OFF"
 # set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS "OFF"
 # set_blocal_assignment -name OPTIMIZATION_MODE          "FAST FUNCTIONAL TEST" 
+
+set_global_assignment -name VHDL_FILE quartus_blocks/ProcessorPLL/ProcessorPLL.vhd
+set_global_assignment -name QIP_FILE quartus_blocks/ProcessorPLL/ProcessorPLL.qip
+set_global_assignment -name VHDL_FILE VGACard/VGA_main.vhd
+set_global_assignment -name VHDL_FILE RISCVProcessor/common.vhd
+set_global_assignment -name VHDL_FILE RISCVProcessor/ALU.vhd
+set_global_assignment -name VHDL_FILE RISCVProcessor/ALUSelector.vhd
+set_global_assignment -name VHDL_FILE RISCVProcessor/BranchDetector.vhd
+set_global_assignment -name VHDL_FILE RISCVProcessor/ControlUnit.vhd
+set_global_assignment -name VHDL_FILE RISCVProcessor/InstructionFormatSelector.vhd
+set_global_assignment -name VHDL_FILE RISCVProcessor/ImmediateGenerator.vhd
+set_global_assignment -name VHDL_FILE RISCVProcessor/InstructionStateMaxCounterSelector.vhd
+set_global_assignment -name VHDL_FILE RISCVProcessor/InstructionStateSelector.vhd
+set_global_assignment -name VHDL_FILE RISCVProcessor/MemoryMasker.vhd
+set_global_assignment -name VHDL_FILE RISCVProcessor/RISCVProcessor.vhd
+set_global_assignment -name VHDL_FILE VGACard/VGACard.vhd
+set_global_assignment -name VHDL_FILE quartus_blocks/DualPortRAM.vhd
+set_global_assignment -name VHDL_FILE quartus_blocks/SinglePortROM.vhd
+set_global_assignment -name VHDL_FILE Main.vhd
+set_global_assignment -name VHDL_FILE VGACard/debouncer_test.vhd
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
