@@ -20,7 +20,7 @@ end entity RISCVProcessor;
 
 architecture rtl of RISCVProcessor is
 
-    constant clk_period : time := 20 ns;
+    constant clk_period : time := 134 ns;
 
     -- State Management
     signal prev_st_cntr     : instruction_state_counter_t := 0;
