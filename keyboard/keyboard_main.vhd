@@ -15,13 +15,12 @@ end entity;
 
 architecture rtl of keyboard_main is
 
-    -- signal reg_clk : std_logic;
-    -- signal value   : std_logic_vector(n_displays * 4 - 1 downto 0);
+    constant n_stored_bytes : integer range 1 to 7 := 3;
 
-    signal shift_register : std_logic_vector(32 downto 0) := (others => '0');
-    signal shift_counter  : integer range 0 to 11         := 0;
+    signal shift_register : std_logic_vector(n_stored_bytes * 11 - 1 downto 0) := (others => '0');
+    signal shift_counter  : integer range 0 to 11                              := 0;
 
-    signal display_data : std_logic_vector(n_displays * 4 - 1 downto 0);
+    signal stored_bytes : std_logic_vector(n_stored_bytes * 8 - 1 downto 0);
 
 begin
 
@@ -50,21 +49,15 @@ begin
         generic map(
             n_displays => n_displays)
         port map(
-            value => display_data,
+            value => stored_bytes,
             leds  => leds);
 
-    display_data(7 downto 0) <= shift_register(8 downto 1) when shift_counter = 0 else
-    (others => '0');
+    sb : for i in 0 to n_stored_bytes - 1 generate
 
-    display_data(15 downto 8) <= shift_register(19 downto 12) when shift_counter = 0 else
-    (others => '0');
+        stored_bytes(8 * (i + 1) downto 8 * i) <= shift_register(11 * i + 8 downto 11 * i + 1) when shift_counter = 0 else
+        (others => '0');
 
-    display_data(23 downto 16) <= shift_register(30 downto 23) when shift_counter = 0 else
-    (others => '0');
-
-    -- display_data(23 downto 16) <= (others => '0');
-
-    -- display_data(n_displays * 4 - 1 downto 24) <= (others => '0');
+    end generate;
 
     -- reg_clk <= not ps2_clk;
     -- reg : entity work.ShiftRegister
