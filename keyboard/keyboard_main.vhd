@@ -30,7 +30,7 @@ begin
 
     process (ps2_clk)
 
-        variable last_received_byte_idx : integer := n_stored_bytes * 11 + 1;
+        variable last_received_byte_idx : integer := (n_stored_bytes - 1) * 11 + 1;
         variable last_received_byte     : std_logic_vector(7 downto 0);
 
     begin
