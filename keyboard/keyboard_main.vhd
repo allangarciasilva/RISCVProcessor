@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 entity keyboard_main is
     generic (
-        n_displays : integer range 1 to 6 := 4
+        n_displays : integer range 1 to 6 := 6
     );
     port (
         ps2_clk  : in std_logic;
