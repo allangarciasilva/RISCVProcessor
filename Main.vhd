@@ -49,7 +49,7 @@ architecture rtl of Main is
 
     signal hex_display_data : std_logic_vector(n_displays * 4 - 1 downto 0) := (others => '0');
 
-    signal kb_keypressed : std_logic;
+    signal kb_keypressed : std_logic := '0';
     signal kb_ascii_code : std_logic_vector(6 downto 0);
 
 begin

@@ -20,6 +20,8 @@ architecture rtl of Main_tb is
     signal vga_b         : std_logic_vector(3 downto 0);
     signal vga_pixel_clk : std_logic;
 
+    signal ps2_clk, ps2_data : std_logic := '1';
+
 begin
 
     dut : entity work.Main
@@ -28,16 +30,15 @@ begin
             output_pixel_clk => '1'
         )
         port map(
-            clk_btn          => clk_50mhz,
-            clk_50mhz        => clk_50mhz,
-            vga_h_sync       => vga_h_sync,
-            vga_v_sync       => vga_v_sync,
-            vga_r            => vga_r,
-            vga_g            => vga_g,
-            vga_b            => vga_b,
-            vga_pixel_clk    => vga_pixel_clk,
-            pc               => open,
-            processor_output => open
+            clk_50mhz     => clk_50mhz,
+            vga_h_sync    => vga_h_sync,
+            vga_v_sync    => vga_v_sync,
+            vga_r         => vga_r,
+            vga_g         => vga_g,
+            vga_b         => vga_b,
+            vga_pixel_clk => vga_pixel_clk,
+            ps2_clk       => ps2_clk,
+            ps2_data      => ps2_data
         );
 
     log : process (vga_pixel_clk)
@@ -83,6 +84,34 @@ begin
             wait for period_50mhz/2;
 
         end loop;
+        wait;
+
+    end process; -- clk
+
+    kb : process
+
+        variable data : std_logic_vector(10 downto 0);
+
+    begin
+
+        data := "11000111100";
+
+        ps2_clk <= '1';
+        wait for 2 ms;
+
+        for i in 0 to data'length - 1 loop
+
+            ps2_data <= data(i);
+
+            ps2_clk <= '1';
+            wait for 1 ms;
+
+            ps2_clk <= '0';
+            wait for 1 ms;
+
+        end loop;
+
+        ps2_clk <= '1';
         wait;
 
     end process; -- clk

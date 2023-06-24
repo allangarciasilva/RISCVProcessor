@@ -69,8 +69,8 @@ architecture rtl of RISCVProcessor is
 
     signal wait_clocks : unsigned(63 downto 0) := to_unsigned(0, 64);
 
-    signal self_halt            : std_logic := '0';
     signal kb_keypressed_buffer : word_t    := SENTINEL_KEYPRESSED_VALUE;
+    signal self_halt            : std_logic := '0';
 
 begin
 
@@ -148,6 +148,18 @@ begin
 
     halt <= self_halt;
 
+    kb : process (kb_keypressed, kb_ascii_code)
+    begin
+
+        if kb_keypressed = '1' then
+            kb_keypressed_buffer             <= ZEROES;
+            kb_keypressed_buffer(6 downto 0) <= kb_ascii_code;
+        else
+            kb_keypressed_buffer <= SENTINEL_KEYPRESSED_VALUE;
+        end if;
+
+    end process; -- kb
+
     process (clk_50mhz, wait_clocks, reset)
     begin
 
@@ -179,13 +191,6 @@ begin
                 curr_pc      <= mem_pc;
                 prev_st_cntr <= curr_st_cntr;
                 prev_inst    <= inst;
-
-                if kb_keypressed = '1' then
-                    kb_keypressed_buffer             <= ZEROES;
-                    kb_keypressed_buffer(6 downto 0) <= kb_ascii_code;
-                else
-                    kb_keypressed_buffer <= SENTINEL_KEYPRESSED_VALUE;
-                end if;
 
                 if reset = '1' then
 

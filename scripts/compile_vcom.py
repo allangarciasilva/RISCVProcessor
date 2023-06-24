@@ -4,6 +4,13 @@ import subprocess
 SIMULATION_DIR = "simulation"
 
 files = [
+    "keyboard/ShiftRegister.vhd",
+    "keyboard/SevenSegments.vhd",
+    "keyboard/SevenSegmentsArray.vhd",
+    "keyboard/debounce.vhd",
+    "keyboard/ps2_keyboard.vhd",
+    "keyboard/ps2_keyboard_to_ascii.vhd",
+    "keyboard/keyboard_main.vhd",
     "quartus_blocks/ProcessorPLL/ProcessorPLL_sim/ProcessorPLL.vho",
     "RISCVProcessor/common.vhd",
     "RISCVProcessor/ALU.vhd",
