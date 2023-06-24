@@ -53,12 +53,9 @@ begin
             leds  => leds);
 
     sb : for i in 0 to n_stored_bytes - 1 generate
-        variable stored_byte_idx    : integer := 8 * i;
-        variable shift_register_idx : integer := 11 * i + 1;
-    begin
 
-        stored_bytes(stored_byte_idx + 7 downto stored_byte_idx) <=
-        shift_register(shift_register_idx + 7 downto shift_register_idx)
+        stored_bytes(8 * i + 7 downto 8 * i) <=
+        shift_register(11 * i + 8 downto 11 * i + 1)
         when shift_counter = 0 else
         (others => '0');
 
