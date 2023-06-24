@@ -55,6 +55,7 @@ set_location_assignment PIN_M9 -to clk_50mhz
 
 set_location_assignment PIN_D3 -to ps2_clk
 set_location_assignment PIN_G2 -to ps2_data
+set_location_assignment PIN_AA2 -to ascii_new
 
 set_location_assignment PIN_U21 -to leds[0]
 set_location_assignment PIN_V21 -to leds[1]
@@ -178,7 +179,10 @@ set_global_assignment -name FITTER_EFFORT FAST_FIT
 # set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS "OFF"
 # set_blocal_assignment -name OPTIMIZATION_MODE          "FAST FUNCTIONAL TEST" 
 
+set_global_assignment -name VHDL_FILE keyboard/debounce.vhd
 set_global_assignment -name VHDL_FILE keyboard/keyboard_main.vhd
+set_global_assignment -name VHDL_FILE keyboard/ps2_keyboard_to_ascii.vhd
+set_global_assignment -name VHDL_FILE keyboard/ps2_keyboard.vhd
 set_global_assignment -name VHDL_FILE keyboard/SevenSegmentsArray.vhd
 set_global_assignment -name VHDL_FILE keyboard/SevenSegments.vhd
 set_global_assignment -name VHDL_FILE keyboard/ShiftRegister.vhd
