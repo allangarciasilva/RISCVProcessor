@@ -79,7 +79,8 @@ begin
             address_width       => mem_address_width,
             initialization_file => path_prefix & "memory_files/memory_init.mif")
         port map(
-            clk       => pc_clk,
+            clk_a     => pc_clk,
+            clk_b     => clk_50mhz,
             address_a => mem_addr(mem_address_width + 1 downto 2),
             address_b => ram_addr_final(mem_address_width - 1 downto 0),
             data_a    => mem_out,

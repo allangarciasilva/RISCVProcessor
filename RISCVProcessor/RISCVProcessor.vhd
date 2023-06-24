@@ -5,6 +5,9 @@ use IEEE.numeric_std.all;
 use work.RISCV.all;
 
 entity RISCVProcessor is
+    generic (
+        clk_period : time := 125 ns
+    );
     port (
         clk_50mhz    : in std_logic;
         reset        : in std_logic;
@@ -19,8 +22,6 @@ entity RISCVProcessor is
 end entity RISCVProcessor;
 
 architecture rtl of RISCVProcessor is
-
-    constant clk_period : time := 134 ns;
 
     -- State Management
     signal prev_st_cntr     : instruction_state_counter_t := 0;

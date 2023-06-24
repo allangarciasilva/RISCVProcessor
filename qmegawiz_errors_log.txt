@@ -1,0 +1,11 @@
+
+
+/home/allan/Documents/Projects/RISCVProcessor/quartus_blocks/ProcessorPLL/ProcessorPLL.vhd
+
+Jun 23 11PM:46:22>: Megafunction PLL Intel FPGA IP v21.1 is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
+
+/home/allan/Documents/Projects/RISCVProcessor/quartus_blocks/ProcessorPLL/ProcessorPLL.vhd
+
+Jun 23 11PM:46:43>: Megafunction PLL Intel FPGA IP v21.1 is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
