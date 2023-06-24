@@ -23,27 +23,41 @@ architecture rtl of keyboard_main is
 
     signal stored_bytes : std_logic_vector(n_stored_bytes * 8 - 1 downto 0);
 
-    signal last_received_byte : std_logic_vector(7 downto 0);
+    signal on_stop         : boolean              := false;
+    signal remaining_bytes : integer range 0 to 3 := 0;
 
 begin
 
-    last_received_byte <= stored_bytes(stored_bytes'length - 1 downto stored_bytes'length - 8);
-
     process (ps2_clk)
-    begin
 
+        variable last_received_byte_idx : integer := n_stored_bytes * 11 + 1;
+        variable last_received_byte     : std_logic_vector(7 downto 0);
+
+    begin
         if falling_edge(ps2_clk) then
 
             shift_register <= next_shift_register_value;
+            last_received_byte := next_shift_register_value(last_received_byte_idx + 7 downto last_received_byte_idx);
 
             if shift_counter = 10 then
                 shift_counter <= 0;
+
+                if last_received_byte = x"E0" then
+                    remaining_bytes <= 1;
+                elsif last_received_byte = x"F0" then
+                    on_stop <= true;
+                else
+                    remaining_bytes <= 0;
+                end if;
+
+                if remaining_bytes = 0 then
+                    on_stop <= false;
+                end if;
             else
                 shift_counter <= shift_counter + 1;
             end if;
 
         end if;
-
     end process;
 
     arr : entity work.SevenSegmentsArray
@@ -57,7 +71,7 @@ begin
 
         stored_bytes(8 * i + 7 downto 8 * i) <=
         shift_register(11 * i + 8 downto 11 * i + 1)
-        when shift_counter = 0 else
+        when shift_counter = 0 and remaining_bytes = 0 and not on_stop else
         (others => '0');
 
     end generate;
