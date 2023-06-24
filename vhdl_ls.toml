@@ -21,4 +21,7 @@ riscv.files = [
     "testbenches/VGACard_tb.vhd",
     "testbenches/Main_tb.vhd",
     "quartus_blocks/ProcessorPLL/ProcessorPLL.vhd",
+    "keyboard/debounce.vhd",
+    "keyboard/keyboard_main.vhd",
+    "keyboard/ps2_keyboard.vhd"
 ]

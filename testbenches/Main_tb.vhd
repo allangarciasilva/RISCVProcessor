@@ -36,6 +36,7 @@ begin
             vga_g            => vga_g,
             vga_b            => vga_b,
             vga_pixel_clk    => vga_pixel_clk,
+            pc               => open,
             processor_output => open
         );
 
