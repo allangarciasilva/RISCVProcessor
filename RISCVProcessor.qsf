@@ -164,9 +164,11 @@ set_global_assignment -name FITTER_EFFORT FAST_FIT
 # set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS "OFF"
 # set_blocal_assignment -name OPTIMIZATION_MODE          "FAST FUNCTIONAL TEST" 
 
-set_global_assignment -name VHDL_FILE keyboard/ps2_keyboard.vhd
 set_global_assignment -name VHDL_FILE keyboard/keyboard_main.vhd
-set_global_assignment -name VHDL_FILE keyboard/debounce.vhd
+set_global_assignment -name VHDL_FILE keyboard/SevenSegmentsArray.vhd
+set_global_assignment -name VHDL_FILE keyboard/SevenSegments.vhd
+set_global_assignment -name VHDL_FILE keyboard/ShiftRegister.vhd
+
 set_global_assignment -name VHDL_FILE quartus_blocks/ProcessorPLL/ProcessorPLL.vhd
 set_global_assignment -name QIP_FILE quartus_blocks/ProcessorPLL/ProcessorPLL.qip
 set_global_assignment -name VHDL_FILE RISCVProcessor/common.vhd
