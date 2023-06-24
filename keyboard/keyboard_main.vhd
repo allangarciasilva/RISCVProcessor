@@ -18,7 +18,7 @@ architecture rtl of keyboard_main is
     -- signal reg_clk : std_logic;
     -- signal value   : std_logic_vector(n_displays * 4 - 1 downto 0);
 
-    signal shift_register : std_logic_vector(33 downto 0) := (others => '0');
+    signal shift_register : std_logic_vector(22 downto 0) := (others => '0');
     signal shift_counter  : integer range 0 to 11         := 0;
 
     signal display_data : std_logic_vector(n_displays * 4 - 1 downto 0);
@@ -59,8 +59,10 @@ begin
     display_data(15 downto 8) <= shift_register(19 downto 12) when shift_counter = 0 else
     (others => '0');
 
-    display_data(23 downto 16) <= shift_register(30 downto 23) when shift_counter = 0 else
-    (others => '0');
+    -- display_data(23 downto 16) <= shift_register(30 downto 23) when shift_counter = 0 else
+    -- (others => '0');
+
+    display_data(23 downto 16) <= (others => '0');
 
     -- display_data(n_displays * 4 - 1 downto 24) <= (others => '0');
 
