@@ -17,23 +17,24 @@ architecture rtl of keyboard_main is
 
     constant n_stored_bytes : integer range 1 to 7 := 3;
 
-    signal shift_register : std_logic_vector(n_stored_bytes * 11 - 1 downto 0) := (others => '0');
-    signal shift_counter  : integer range 0 to 11                              := 0;
+    signal next_shift_register_value : std_logic_vector(n_stored_bytes * 11 - 1 downto 0);
+    signal shift_register            : std_logic_vector(n_stored_bytes * 11 - 1 downto 0) := (others => '0');
+    signal shift_counter             : integer range 0 to 11                              := 0;
 
     signal stored_bytes : std_logic_vector(n_stored_bytes * 8 - 1 downto 0);
 
+    signal last_received_byte : std_logic_vector(7 downto 0);
+
 begin
+
+    last_received_byte <= stored_bytes(stored_bytes'length - 1 downto stored_bytes'length - 8);
 
     process (ps2_clk)
     begin
 
         if falling_edge(ps2_clk) then
 
-            shift_register(shift_register'length - 1) <= ps2_data;
-
-            for i in 1 to shift_register'length - 1 loop
-                shift_register(i - 1) <= shift_register(i);
-            end loop;
+            shift_register <= next_shift_register_value;
 
             if shift_counter = 10 then
                 shift_counter <= 0;
@@ -61,13 +62,9 @@ begin
 
     end generate;
 
-    -- reg_clk <= not ps2_clk;
-    -- reg : entity work.ShiftRegister
-    --     generic map(
-    --         width => value'length)
-    --     port map(
-    --         clk => reg_clk,
-    --         d   => ps2_data,
-    --         q   => value);
+    next_shift_register_value(shift_register'length - 1) <= ps2_data;
+    nsr : for i in 1 to shift_register'length - 1 generate
+        next_shift_register_value(i - 1) <= shift_register(i);
+    end generate;
 
 end architecture;
