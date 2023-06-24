@@ -26,11 +26,11 @@ begin
 
         if rising_edge(clk) then
 
-            data(0) <= d;
+            data(width - 1) <= d;
 
-            shift : for i in 1 to width - 1 loop
+            shift : for i in 0 to width - 2 loop
 
-                data(i) <= data(i - 1);
+                data(i) <= data(i + 1);
 
             end loop;
 
