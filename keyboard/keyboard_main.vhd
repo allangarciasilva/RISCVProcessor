@@ -1,26 +1,31 @@
-library IEEE;
-use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;
-use work.RISCV.all;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity keyboard_main is
+    generic (
+        n_displays : integer range 1 to 6 := 4
+    );
     port (
-        clk_50mhz    : in std_logic;
-        ps2_clk      : in std_logic;                      --clock signal from PS/2 keyboard
-        ps2_data     : in std_logic;                      --data signal from PS/2 keyboard
-        ps2_code_new : out std_logic;                     --flag that new PS/2 code is available on ps2_code bus
-        ps2_code     : out std_logic_vector(7 downto 0)); --code received from PS/2
-end entity keyboard_main;
+        ps2_clk  : in std_logic;
+        ps2_data : in std_logic;
+        leds     : out std_logic_vector(n_displays * 7 - 1 downto 0)
+    );
+end entity;
 
 architecture rtl of keyboard_main is
 
+    signal value : std_logic_vector(n_displays * 4 - 1 downto 0);
+
 begin
 
-    kb : entity work.ps2_keyboard port map (
-        clk          => clk_50mhz,
-        ps2_clk      => ps2_clk,
-        ps2_data     => ps2_data,
-        ps2_code_new => ps2_code_new,
-        ps2_code     => ps2_code);
+    value <= x"ABCD";
 
-end architecture rtl;
+    arr : entity work.SevenSegmentsArray
+        generic map(
+            n_displays => n_displays)
+        port map(
+            value => value,
+            leds  => leds);
+
+end architecture;
