@@ -9,15 +9,17 @@ entity RISCVProcessor is
         clk_period : time := 125 ns
     );
     port (
-        clk_50mhz    : in std_logic;
-        reset        : in std_logic;
-        mem_in       : in word_t;
-        mem_out      : out word_t;
-        mem_addr     : out word_t    := (others => '0');
-        mem_write_en : out std_logic := '0';
-        mem_byte_en  : out std_logic_vector(3 downto 0);
-        halt         : out std_logic := '0';
-        output_reg   : out word_t    := ZEROES
+        clk_50mhz     : in std_logic;
+        reset         : in std_logic;
+        mem_in        : in word_t;
+        kb_keypressed : in std_logic;
+        kb_ascii_code : in std_logic_vector(6 downto 0);
+        mem_out       : out word_t;
+        mem_addr      : out word_t    := (others => '0');
+        mem_write_en  : out std_logic := '0';
+        mem_byte_en   : out std_logic_vector(3 downto 0);
+        halt          : out std_logic := '0';
+        output_reg    : out word_t    := ZEROES
     );
 end entity RISCVProcessor;
 
@@ -67,7 +69,8 @@ architecture rtl of RISCVProcessor is
 
     signal wait_clocks : unsigned(63 downto 0) := to_unsigned(0, 64);
 
-    signal self_halt : std_logic := '0';
+    signal self_halt            : std_logic := '0';
+    signal kb_keypressed_buffer : word_t    := SENTINEL_KEYPRESSED_VALUE;
 
 begin
 
@@ -158,7 +161,7 @@ begin
 
                 if opcode = IOP_ECALL then
                     if register_bank(ECALL_REG) = EC_READ_CHAR then
-                        register_bank(10) <= std_logic_vector(to_unsigned(75, word_t'length));
+                        register_bank(10) <= kb_keypressed_buffer;
                     elsif register_bank(ECALL_REG) = EC_OUTPUT_REG then
                         output_reg <= register_bank(10);
                     elsif register_bank(ECALL_REG) = EC_SLEEP_US then
@@ -177,17 +180,23 @@ begin
                 prev_st_cntr <= curr_st_cntr;
                 prev_inst    <= inst;
 
+                if kb_keypressed = '1' then
+                    kb_keypressed_buffer             <= ZEROES;
+                    kb_keypressed_buffer(6 downto 0) <= kb_ascii_code;
+                else
+                    kb_keypressed_buffer <= SENTINEL_KEYPRESSED_VALUE;
+                end if;
+
+                if reset = '1' then
+
+                    curr_pc       <= (others => '0');
+                    wait_clocks   <= (others => '0');
+                    prev_st_cntr  <= 0;
+                    register_bank <= (others => ZEROES);
+
+                end if;
+
             end if;
-
-            if reset = '1' then
-
-                curr_pc       <= (others => '0');
-                wait_clocks   <= (others => '0');
-                prev_st_cntr  <= 0;
-                register_bank <= (others => ZEROES);
-
-            end if;
-
         end if;
 
         if falling_edge(clk_50mhz) then

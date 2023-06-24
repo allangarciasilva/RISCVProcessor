@@ -15,7 +15,9 @@ package RISCV is
         OPR_ADD, OPR_SLL, OPR_SLT, OPR_SLTU, OPR_XOR, OPR_SRL, OPR_SRA, OPR_OR, OPR_AND, OPR_MUL,
         OPR_MULH, OPR_MULHSU, OPR_MULHU, OPR_DIV, OPR_DIVU, OPR_REM, OPR_REMU, OPR_SUB, OPR_ERROR
     );
-    constant ZEROES : word_t := (others => '0');
+
+    constant ZEROES                    : word_t := (others => '0');
+    constant SENTINEL_KEYPRESSED_VALUE : word_t := std_logic_vector(to_unsigned(255, word_t'length));
 
     -- Functions and constants related to func3, func7 and func10 (concatenation of func7 and func3)
     subtype func3_t is std_logic_vector(2 downto 0);

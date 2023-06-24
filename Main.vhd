@@ -66,15 +66,17 @@ begin
     pc_reset <= not pll_locked;
 
     processor : entity work.RISCVProcessor port map (
-        clk_50mhz    => pc_clk,
-        mem_in       => pc_mem_in,
-        mem_out      => pc_mem_out,
-        mem_addr     => pc_mem_addr,
-        mem_write_en => pc_mem_write_en,
-        mem_byte_en  => pc_mem_byte_en,
-        halt         => open,
-        reset        => pc_reset,
-        output_reg   => pc_output_reg);
+        clk_50mhz     => pc_clk,
+        mem_in        => pc_mem_in,
+        mem_out       => pc_mem_out,
+        mem_addr      => pc_mem_addr,
+        mem_write_en  => pc_mem_write_en,
+        mem_byte_en   => pc_mem_byte_en,
+        halt          => open,
+        reset         => pc_reset,
+        output_reg    => pc_output_reg,
+        kb_keypressed => kb_keypressed,
+        kb_ascii_code => kb_ascii_code);
 
     mem : entity work.DualPortRAM
         generic map(
