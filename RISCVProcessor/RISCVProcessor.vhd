@@ -148,22 +148,17 @@ begin
 
     halt <= self_halt;
 
-    kb : process (kb_keypressed, kb_ascii_code)
-    begin
-
-        if kb_keypressed = '1' then
-            kb_keypressed_buffer             <= ZEROES;
-            kb_keypressed_buffer(6 downto 0) <= kb_ascii_code;
-        else
-            kb_keypressed_buffer <= SENTINEL_KEYPRESSED_VALUE;
-        end if;
-
-    end process; -- kb
-
     process (clk_50mhz, wait_clocks, reset)
     begin
 
         if rising_edge(clk_50mhz) then
+
+            if kb_keypressed = '1' then
+                kb_keypressed_buffer             <= ZEROES;
+                kb_keypressed_buffer(6 downto 0) <= kb_ascii_code;
+            else
+                kb_keypressed_buffer <= SENTINEL_KEYPRESSED_VALUE;
+            end if;
 
             if wait_clocks /= 0 then
                 wait_clocks <= wait_clocks - 1;
