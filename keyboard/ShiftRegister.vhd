@@ -14,18 +14,23 @@ entity ShiftRegister is
 end entity;
 
 architecture rtl of ShiftRegister is
+
+    signal data : std_logic_vector(width - 1 downto 0);
+
 begin
+
+    q <= data;
 
     process (clk)
     begin
 
         if rising_edge(clk) then
 
-            q(0) <= d;
+            data(0) <= d;
 
             shift : for i in 1 to width - 1 loop
 
-                q(i) <= q(i - 1);
+                data(i) <= data(i - 1);
 
             end loop;
 
