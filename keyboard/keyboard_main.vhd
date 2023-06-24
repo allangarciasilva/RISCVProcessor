@@ -15,11 +15,12 @@ end entity;
 
 architecture rtl of keyboard_main is
 
-    signal value : std_logic_vector(n_displays * 4 - 1 downto 0);
+    signal reg_clk : std_logic;
+    signal value   : std_logic_vector(n_displays * 4 - 1 downto 0);
 
 begin
 
-    value <= x"ABCD";
+    reg_clk <= not ps2_clk;
 
     arr : entity work.SevenSegmentsArray
         generic map(
@@ -27,5 +28,13 @@ begin
         port map(
             value => value,
             leds  => leds);
+
+    reg : entity work.ShiftRegister
+        generic map(
+            width => value'length)
+        port map(
+            clk => reg_clk,
+            d   => ps2_data,
+            q   => value);
 
 end architecture;
