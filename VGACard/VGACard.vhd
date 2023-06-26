@@ -56,7 +56,7 @@ architecture rtl of VGACard is
 
 begin
 
-    char_clk <= not clk_25mhz;
+    char_clk <= clk_25mhz;
     ram_addr <= std_logic_vector(to_unsigned(char_idx, ram_addr'length));
 
     char_addr        <= ram_in(7 downto 0);

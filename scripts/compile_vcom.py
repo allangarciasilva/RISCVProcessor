@@ -28,6 +28,7 @@ files = [
     "quartus_blocks/SinglePortROM.vhd",
     "Main.vhd",
     "testbenches/Main_tb.vhd",
+    "testbenches/keyboard_tb.vhd",
 ]
 
 os.makedirs(SIMULATION_DIR, exist_ok=True)

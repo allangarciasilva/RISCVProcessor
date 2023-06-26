@@ -20,6 +20,7 @@ riscv.files = [
     "testbenches/RISCVProcessor_tb.vhd",
     "testbenches/VGACard_tb.vhd",
     "testbenches/Main_tb.vhd",
+    "testbenches/keyboard_tb.vhd",
     "quartus_blocks/ProcessorPLL/ProcessorPLL.vhd",
     "keyboard/debounce.vhd",
     "keyboard/keyboard_main.vhd",
