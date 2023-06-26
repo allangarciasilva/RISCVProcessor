@@ -168,7 +168,8 @@ begin
 
                 if opcode = IOP_ECALL then
                     if register_bank(ECALL_REG) = EC_READ_CHAR then
-                        register_bank(10) <= kb_keypressed_buffer;
+                        register_bank(10)    <= kb_keypressed_buffer;
+                        kb_keypressed_buffer <= SENTINEL_KEYPRESSED_VALUE;
                     elsif register_bank(ECALL_REG) = EC_OUTPUT_REG then
                         output_reg <= register_bank(10);
                     elsif register_bank(ECALL_REG) = EC_SLEEP_US then
