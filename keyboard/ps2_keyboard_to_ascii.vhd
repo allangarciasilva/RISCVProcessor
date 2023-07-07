@@ -289,6 +289,17 @@ BEGIN
                   WHEN x"5D" => ascii <= x"5C"; --\
                   WHEN x"5B" => ascii <= x"5D"; --]
                   WHEN x"0E" => ascii <= x"60"; --`
+                  -- NUMPAD
+                  WHEN x"70" => ascii <= x"30"; --0
+                  WHEN x"69" => ascii <= x"31"; --1
+                  WHEN x"72" => ascii <= x"32"; --2
+                  WHEN x"7A" => ascii <= x"33"; --3
+                  WHEN x"6B" => ascii <= x"34"; --4
+                  WHEN x"73" => ascii <= x"35"; --5
+                  WHEN x"74" => ascii <= x"36"; --6
+                  WHEN x"6C" => ascii <= x"37"; --7
+                  WHEN x"75" => ascii <= x"38"; --8
+                  WHEN x"7D" => ascii <= x"39"; --9
                   WHEN OTHERS => NULL;
                 END CASE;
               END IF;
